@@ -112,6 +112,7 @@ $geo = new GeoNamesClient('maneza');
                 <h4>Here is the link to download your product <a target="_blank"
                         href="https://manezaf8.co.za/music-shop/">Download Here...</a></h4>
                 <br />
+                <p>Go back to the <a href="<?= BASE_URL . "payfast-form" ?>">payfast payment</a></p>
                 <br />
  
 

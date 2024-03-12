@@ -1,16 +1,11 @@
 <?php
 
 use Gabela\Core\Session;
-use Monolog\Logger;
-use Monolog\Handler\StreamHandler;
-use GeoNames\Client as GeoNamesClient;
 
-$logger = new Logger('Geo-location');
-// Now add some handlers
-$logger->pushHandler(new StreamHandler('var/System.log', Logger::DEBUG));
+$payfastConfig = getIncluded(WEB_CONFIGS);
 
-$geo = new GeoNamesClient('maneza');
-
+$merchantID = $payfastConfig['payfast']['merchant_id'];
+$merchantKey = $payfastConfig['payfast']['merchant_key'];
 
 ?>
 
@@ -115,8 +110,8 @@ $geo = new GeoNamesClient('maneza');
                 <br />
                 <br />
                 <form action=" https://sandbox.payfast.co.za​/eng/process" method="post">
-                    <input type="hidden" name="merchant_id" value="10000100">
-                    <input type="hidden" name="merchant_key" value="46f0cd694581a">
+                    <input type="hidden" name="merchant_id" value="<?= $merchantID ?>">
+                    <input type="hidden" name="merchant_key" value="<?= $merchantKey ?>">
                     <input type="hidden" name="return_url" value="<?= BASE_URL ?>payfast-success">
                     <input type="hidden" name="cancel_url" value="<?= BASE_URL ?>payfast-cancel">
                     <input type="hidden" name="notify_url" value="<?= BASE_URL ?>payfast-notify">
