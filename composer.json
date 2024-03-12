@@ -2,7 +2,7 @@
     "name": "gabela/gabela-payfast",
     "description": "Gabela payfast's module",
     "type": "plugin",
-    "version": "1.2.6",
+    "version": "1.0",
     "keywords": ["gabela", "payfast", "framework"],
     "license": "MIT",
     "authors": [
