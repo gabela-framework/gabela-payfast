@@ -2,7 +2,7 @@
     "name": "gabela/gabela-payfast",
     "description": "Gabela payfast's module",
     "type": "plugin",
-    "version": "1.1",
+    "version": "1.2",
     "keywords": ["gabela", "payfast", "framework"],
     "license": "MIT",
     "authors": [
@@ -12,7 +12,8 @@
         }
     ],
     "require": {
-        "php": "^7.2.5 || ^8.0"
+        "php": "^7.2.5 || ^8.0",
+        "payfast/payfast-php-sdk": "^1.1"
     },
     "autoload": {
         "psr-4": {

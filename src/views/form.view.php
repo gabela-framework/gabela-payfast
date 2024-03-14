@@ -1,11 +1,31 @@
 <?php
 
 use Gabela\Core\Session;
+use PayFast\PayFastPayment;
 
 $payfastConfig = getIncluded(WEB_CONFIGS);
 
 $merchantID = $payfastConfig['payfast']['merchant_id'];
 $merchantKey = $payfastConfig['payfast']['merchant_key'];
+$passPhrase = $payfastConfig['payfast']['passPhrase'];
+$testMode = $payfastConfig['payfast']['testMode'];
+
+$payfast = new PayFastPayment([
+    'merchantId' => $merchantID,
+    'merchantKey' => $merchantKey,
+    'passPhrase' => $passPhrase,
+    'testMode' => $testMode
+]);
+
+$data = [
+    'amount' => '100.00',
+    'item_name' => 'Order#123',
+    'return_url' => BASE_URL . 'payfast-success',
+    'cancel_url' => BASE_URL . 'payfast-cancel',
+    'notify_url' => BASE_URL . 'payfast-notify',
+];
+
+
 
 ?>
 
@@ -33,7 +53,8 @@ $merchantKey = $payfastConfig['payfast']['merchant_key'];
     <!-- Include SweetAlert2 CSS and JS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@10/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <script async src="https://content.payfast.io/widgets/moretyme/widget.min.js?amount={product_price}" type="text/javascript"></script>
+    <script async src="https://content.payfast.io/widgets/moretyme/widget.min.js?amount={product_price}"
+        type="text/javascript"></script>
 
     <!-- Javascript Files
     ================================================== -->
@@ -108,18 +129,27 @@ $merchantKey = $payfastConfig['payfast']['merchant_key'];
                 <h4>Use the official Gabela Framework github for documentation <a target="_blank"
                         href="https://github.com/gabela-framework/gabela">Here...</a></h4>
                 <br />
-                <br />
-                <form action=" https://sandbox.payfast.co.za​/eng/process" method="post">
-                    <input type="hidden" name="merchant_id" value="<?= $merchantID ?>">
-                    <input type="hidden" name="merchant_key" value="<?= $merchantKey ?>">
-                    <input type="hidden" name="return_url" value="<?= BASE_URL ?>payfast-success">
-                    <input type="hidden" name="cancel_url" value="<?= BASE_URL ?>payfast-cancel">
-                    <input type="hidden" name="notify_url" value="<?= BASE_URL ?>payfast-notify">
+                <?php
 
-                    <input type="hidden" name="amount" value="100.00">
-                    <input type="hidden" name="item_name" value="Test Product">
-                    <input class="btn btn-primary" type="submit" value="Pay Now">
-                </form>
+                $paymentData = [
+                    'merchant_id' => $merchantID,
+                    'merchant_key' => $merchantKey,
+                    'amount' => '100.00',
+                    'item_name' => 'Order123',
+                    'return_url' => BASE_URL . 'payfast-success',
+                    'cancel_url' => BASE_URL . 'payfast-cancel',
+                    'notify_url' => BASE_URL . 'payfast-notify',
+                ];
+
+                $actionUrl = ($testMode == true) ? 'https://sandbox.payfast.co.za/eng/process' : 'https://payfast.co.za/eng/process';
+
+                $paymentData['signature'] = generatePayFastSignature($paymentData, $passPhrase);
+                print_r($paymentData);
+                $htmlForm = generatePayFastPaymentForm($paymentData, $actionUrl);
+                echo $htmlForm;
+                ?>
+                <br />
+                <?php //echo $payfast->custom->createFormFields($data, ['value' => 'SDK PAY NOW', 'class' => 'btn btn-primary']);  ?>
             </div>
 
             <!-- content begin -->
